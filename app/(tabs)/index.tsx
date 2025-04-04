@@ -1,74 +1,79 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const BrowsingPage = () => {
+    return (
+        <ScrollView style={styles.container}>
+            <View style={styles.header}>
+                <Ionicons name="menu" size={28} color="black" />
+                <Text style={styles.title}>Uber Dripp</Text>
+                <Ionicons name="lock-closed-outline" size={28} color="black" />
+            </View>
 
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
-}
+            <Text style={styles.welcomeText}>Welcome to Laza.</Text>
+
+            <View style={styles.searchContainer}>
+                <TextInput placeholder="Search..." style={styles.searchInput} />
+                <TouchableOpacity style={styles.voiceButton}>
+                    <Ionicons name="mic" size={20} color="white" />
+                </TouchableOpacity>
+            </View>
+
+            <Text style={styles.sectionTitle}>Choose Brand</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.brandContainer}>
+                {['Adidas', 'Nike', 'Fila'].map((brand, index) => (
+                    <TouchableOpacity key={index} style={styles.brandButton}>
+                        <Text style={styles.brandText}>{brand}</Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+
+            <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Recommended Clothes</Text>
+                <Text style={styles.viewAll}>View All</Text>
+            </View>
+
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.productContainer}>
+                {[{
+                    name: 'Nike Sportswear Club Fleece',
+                    price: '$99',
+                    image: 'https://via.placeholder.com/150'
+                }, {
+                    name: 'Trail Running Jacket Nike Windrunner',
+                    price: '$80',
+                    image: 'https://via.placeholder.com/150'
+                }].map((product, index) => (
+                    <View key={index} style={styles.productCard}>
+                        <Image source={{ uri: product.image }} style={styles.productImage} />
+                        <Text style={styles.productName}>{product.name}</Text>
+                        <Text style={styles.productPrice}>{product.price}</Text>
+                    </View>
+                ))}
+            </ScrollView>
+        </ScrollView>
+    );
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+    container: { padding: 20, backgroundColor: '#fff', flex: 1 },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+    title: { fontSize: 24, fontWeight: 'bold' },
+    welcomeText: { fontSize: 18, color: 'gray', marginBottom: 20 },
+    searchContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
+    searchInput: { flex: 1, padding: 10, backgroundColor: '#f0f0f0', borderRadius: 8 },
+    voiceButton: { marginLeft: 10, backgroundColor: '#6c63ff', padding: 10, borderRadius: 8 },
+    sectionTitle: { fontSize: 20, fontWeight: 'bold', marginVertical: 10 },
+    brandContainer: { flexDirection: 'row', marginBottom: 20 },
+    brandButton: { backgroundColor: '#f0f0f0', padding: 10, borderRadius: 20, marginRight: 10 },
+    brandText: { fontWeight: 'bold' },
+    sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    viewAll: { color: '#6c63ff' },
+    productContainer: { flexDirection: 'row', marginVertical: 10 },
+    productCard: { marginRight: 15, width: 150 },
+    productImage: { width: 150, height: 150, borderRadius: 8 },
+    productName: { fontWeight: 'bold', marginTop: 10 },
+    productPrice: { color: 'gray' },
 });
+
+export default BrowsingPage;
