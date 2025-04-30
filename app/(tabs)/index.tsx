@@ -12,7 +12,6 @@ const BrowsingPage = () => {
             </View>
 
             <Text style={styles.welcomeText}>Welcome to Laza.</Text>
-
             <View style={styles.searchContainer}>
                 <TextInput placeholder="Search..." style={styles.searchInput} />
                 <TouchableOpacity style={styles.voiceButton}>
@@ -56,8 +55,8 @@ const BrowsingPage = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { padding: 20, backgroundColor: '#fff', flex: 1 },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+    container: { padding: 20, backgroundColor: '#f4f4f4', flex: 1 },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20,fontWeight: 900 },
     title: { fontSize: 24, fontWeight: 'bold' },
     welcomeText: { fontSize: 18, color: 'gray', marginBottom: 20 },
     searchContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
