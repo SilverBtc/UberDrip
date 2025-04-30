@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@tailwindcss/postcss": "^4.1.4",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
@@ -54,7 +55,7 @@
     "jest-expo": "~52.0.6",
     "postcss": "^8.5.3",
     "react-test-renderer": "18.3.1",
-    "tailwindcss": "3",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.3.3"
   },
   "private": true
