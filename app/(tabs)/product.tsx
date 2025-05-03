@@ -13,34 +13,13 @@ type Product = {
     id: number;
 };
 
-const productList = [{ name: 'Nike Sportswear Club Fleece', price: 99, brand: 'Nike', image: 'https://via.placeholder.com/150' },
-    { name: 'Trail Running Jacket Nike Windrunner', price: 80, brand: 'Nike', image: 'https://via.placeholder.com/150' },
-    { name: 'Adidas Windbreaker', price: 85, brand: 'Adidas', image: 'https://via.placeholder.com/150' },
-    { name: 'Fila Retro Hoodie', price: 65, brand: 'Fila', image: 'https://via.placeholder.com/150' },
-];
-
-const brands = ['All', 'Adidas', 'Nike', 'Fila'];
-
-const price = ['0', '<10', '<25', '<100', 'all']
-
-const material = ['wool', 'polyester', 'jean', 'cum', 'all']
 
 const sizes = ['xs', 's', 'm', 'l', 'xl', 'all'];
 const BrowsingPage = () => {
-
+    {/*product from the json*/}
     const product: Product = productData;
 
-    const [searchText, setSearchText] = useState('');
-    const [selectedBrand, setSelectedBrand] = useState('All');
-    const [selectedPrice, setSelectedPrice] = useState('all');
-    const [selectedMaterial, setSelectedMaterial] = useState('all');
-    const [selectedSize, setSelectedSize] = useState('all');
 
-    const filteredProducts = productList.filter(product => {
-        const matchBrand = selectedBrand === 'All' || product.brand === selectedBrand;
-        const matchSearch = product.name.toLowerCase().includes(searchText.toLowerCase());
-        return matchBrand && matchSearch;
-    });
     return (
         <ScrollView style={styles.container}>
             {/*the header*/}
@@ -75,13 +54,7 @@ const styles = StyleSheet.create({
     container: { padding: 20, backgroundColor: '#fff', flex: 1 },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
     title: { fontSize: 24, fontWeight: 'bold' },
-    welcomeText: { fontSize: 18, color: 'gray', marginBottom: 20 },
-    searchContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
-    searchInput: { flex: 1, padding: 10, backgroundColor: '#f0f0f0', borderRadius: 8 },
-    voiceButton: { marginLeft: 10, backgroundColor: '#6c63ff', padding: 10, borderRadius: 8 },
     sectionTitle: { fontSize: 20, fontWeight: 'bold', marginVertical: 10 },
-    brandContainer: { flexDirection: 'row', marginBottom: 20 },
-    brandButton: { backgroundColor: '#f0f0f0', padding: 10, borderRadius: 20, marginRight: 10 },
     brandText: { fontWeight: 'bold' },
     sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     viewAll: { color: '#6c63ff' },
