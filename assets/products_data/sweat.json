@@ -1,0 +1,10 @@
+{
+  "title": "Nike Club Fleece",
+  "price": 99,
+  "description": "The Nike Throwback Pullover Hoodie Is Made From Premium French Terry Fabric That Blends A Performance Feel.",
+  "size": "M",
+  "color": "#A8E6CF",
+  "stock": 2,
+  "images": ["sweat.png"],
+  "id": 1
+}
