@@ -1,0 +1,17 @@
+{
+  "id": 1,
+  "title": "Official Youcef shirt!",
+  "price": -99.00,
+  "description": "The Official youcebeef T-shirt, it seems well, it smell well.",
+  "size": "XL",
+  "stock": 2,
+  "images": ["kanye.jpeg"],
+  "nbLikes": 12,
+  "sellerID": 1,
+  "category": "T-shirt",
+  "color": "Multicolor",
+  "nbSeen": 4,
+  "deliveryPrice": 5.30,
+  "brand": "Kanye",
+  "state": "worn and stained"
+}
