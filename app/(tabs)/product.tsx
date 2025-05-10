@@ -6,6 +6,8 @@ import productData from "../../assets/products_data/data/kanye.json";
 // JUSTE AU DESSUS
 import { useNavigation } from '@react-navigation/native';
 
+import { Stack } from 'expo-router';
+
 type Product = {
     id: number;
     title: string;
@@ -167,6 +169,8 @@ const BrowsingPage = () => {
             <TouchableOpacity style={styles.contactButton} onPress={() => alert('Ajouté au panier !')}>
                 <Text style={styles.contactButtonText}>Contact Seller</Text>
             </TouchableOpacity>
+            {/* This hides the tab bar on this screen */}
+            <Stack.Screen options={{ tabBarStyle: { display: 'none' } }} />
         </View>
 
     );
