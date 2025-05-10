@@ -165,10 +165,15 @@ const BrowsingPage = () => {
 
 
             </ScrollView>
-            {/*contact button*/}
-            <TouchableOpacity style={styles.contactButton} onPress={() => alert('Ajouté au panier !')}>
-                <Text style={styles.contactButtonText}>Contact Seller</Text>
-            </TouchableOpacity>
+            {/*contact buttons*/}
+            <View style={styles.containContactButtons}>
+                <TouchableOpacity style={styles.contactButton} onPress={() => alert('Ajouté au panier !')}>
+                    <Text style={styles.contactButtonText}>Contact Seller</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.contactButton} onPress={() => alert('Négotiations débutés')}>
+                    <Text style={styles.contactButtonText}>Make a proposal</Text>
+                </TouchableOpacity>
+            </View>
             {/* This hides the tab bar on this screen */}
             <Stack.Screen options={{ tabBarStyle: { display: 'none' } }} />
         </View>
@@ -185,15 +190,24 @@ const styles = StyleSheet.create({
     productImage: { width: "100%", height: 350, borderRadius: 8 },
     productName: { fontWeight: 'bold', marginTop: 10 },
     productPrice: { color: 'gray' },
-    contactButton: { backgroundColor: '#6c63ff', padding: 15, borderRadius: 10, alignItems: 'center', marginTop: 20,
+    containContactButtons: {
         position: 'absolute',
-        bottom: 10,
+        bottom: 0,
+        paddingBottom: 10,
         zIndex: 100,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        backgroundColor: '#fff',
+    },
+    contactButton: { backgroundColor: '#6c63ff', padding: 15, borderRadius: 10, alignItems: 'center', marginTop: 7,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 2,
-        elevation: 3,},
+        elevation: 3,
+    },
     contactButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16, },
     viewPrice: {flexDirection: 'row', justifyContent: 'flex-end',},
     headProduct: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginVertical: 10},
@@ -203,6 +217,7 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: '#f2f2f2',
         borderRadius: 10,
+        marginBottom: 55,
     },
     descriptionTitle: {
         fontSize: 18,
