@@ -33,6 +33,7 @@ const imageMap: { [key: string]: any } = {
     'kanye.jpeg': require('../../assets/products_data/images/kanye.jpeg'),
     'kanye2.jpg': require('../../assets/products_data/images/kanye2.jpg'),
     'White-Sweatshirt-Funny-Boys-Kanye-West-Fortnite-Shirt.jpeg': require('../../assets/products_data/images/White-Sweatshirt-Funny-Boys-Kanye-West-Fortnite-Shirt.jpeg'),
+    'Youcef.png': require('../../assets/user_data/images/Youcef.png'),
 };
 
 const BrowsingPage = () => {
@@ -64,7 +65,7 @@ const BrowsingPage = () => {
                 <TouchableOpacity onPress={() => setShowFullScreen(true)}>
                     <Image
                         style={styles.productImage}
-                        source={imageMap[product.images[0]]}
+                        source={imageMap[mainImage]}
                         accessibilityLabel={product.title}
                     />
                 </TouchableOpacity>
@@ -83,28 +84,22 @@ const BrowsingPage = () => {
                         ))}
                     </View>
                 )}
-
-                {showFullScreen && (
-                    <BlurView intensity={100} tint="dark" style={styles.fullScreenOverlay}>
-                        <TouchableOpacity style={styles.closeButton} onPress={() => setShowFullScreen(false)}>
-                            <Ionicons name="close" size={32} color="white" />
-                        </TouchableOpacity>
-                        <Image
-                            source={imageMap[mainImage]}
-                            style={styles.fullScreenImage}
-                            resizeMode="contain"
-                        />
-                    </BlurView>
-                )}
-
-
-
-
+                {/*User profile*/}
+                <View style={styles.divider} />
+                <View style={styles.sellerBox}>
+                    <Image source={imageMap["Youcef.png"]} style={styles.userImage}></Image>
+                    <View>
+                        <Text>Youcef</Text>
+                        <Text style={styles.productPrice}>Publish Often</Text>
+                    </View>
+                </View>
+                <View style={styles.divider} />
 
                 <View style={styles.headProduct}>
                     <View style={styles.titleContainer}>
                         {/*title of the product*/}
                         <Text style={styles.title}>{product.title}</Text>
+                        <Text style={styles.productPrice}>Description:</Text>
                     </View>
 
                     {/*price of the product*/}
@@ -114,16 +109,11 @@ const BrowsingPage = () => {
                     </View>
                 </View>
 
-                {/*Here possibility to switch image*/}
-
                 {/*description of the product*/}
-                <Text style={styles.productPrice}>Description:</Text>
                 <Text style={styles.sectionTitle}>" {product.description} "</Text>
 
                 <View style={styles.descriptionContainer}>
-                    <Text style={styles.descriptionTitle}>Description</Text>
-                    <Text style={styles.descriptionText}>{product.description}</Text>
-
+                    <Text style={styles.descriptionTitle}>Details</Text>
                     {/* Always show first attribute (e.g., state) */}
                     <View style={styles.attributeRow}>
                         <Text style={styles.attributeLabel}>State</Text>
@@ -188,13 +178,25 @@ const BrowsingPage = () => {
 
 
             </ScrollView>
+            {showFullScreen && (
+                <BlurView intensity={100} tint="dark" style={styles.fullScreenOverlay}>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => setShowFullScreen(false)}>
+                        <Ionicons name="close" size={32} color="white" />
+                    </TouchableOpacity>
+                    <Image
+                        source={imageMap[mainImage]}
+                        style={styles.fullScreenImage}
+                        resizeMode="contain"
+                    />
+                </BlurView>
+            )}
             {/*contact buttons*/}
             <View style={styles.containContactButtons}>
                 <TouchableOpacity style={styles.contactButton} onPress={() => alert('Ajouté au panier !')}>
-                    <Text style={styles.contactButtonText}>Contact Seller</Text>
+                    <Text style={styles.contactButtonText}>Make an Offer</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.contactButton} onPress={() => alert('Négotiations débutés')}>
-                    <Text style={styles.contactButtonText}>Make a proposal</Text>
+                    <Text style={styles.contactButtonText}>Buy</Text>
                 </TouchableOpacity>
             </View>
             {/* This hides the tab bar on this screen */}
@@ -230,11 +232,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 2,
         elevation: 3,
+        width: '40%',
     },
     contactButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16, },
     viewPrice: {flexDirection: 'row', justifyContent: 'flex-end',},
     headProduct: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginVertical: 10},
-    titleContainer: {alignSelf: 'flex-end',}, priceContainer: {alignItems: 'flex-end',},
+    titleContainer: {display: "flex", flexDirection: "column",justifyContent: "space-between"}, priceContainer: {alignItems: 'flex-end',},
     descriptionContainer: {
         marginTop: 20,
         padding: 15,
@@ -295,7 +298,7 @@ const styles = StyleSheet.create({
     prodImages: {
         display: 'flex',
         flexDirection: 'row',
-        padding: 5,
+        marginTop: 11,
         borderRadius: 8,
     },
     previewImage: {
@@ -333,8 +336,17 @@ const styles = StyleSheet.create({
         top: 40,
         right: 20,
         zIndex: 1000,
+    },
+    sellerBox:{
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    userImage:{
+        marginRight: 20,
+        width: 50,
+        height: 50,
+        borderRadius: '100%',
     }
-
 
 
 });
