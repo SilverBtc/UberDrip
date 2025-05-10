@@ -7,6 +7,7 @@ import productData from "../../assets/products_data/data/kanye.json";
 import { useNavigation } from '@react-navigation/native';
 
 import { Stack } from 'expo-router';
+import { BlurView } from 'expo-blur';
 
 type Product = {
     id: number;
@@ -45,6 +46,10 @@ const BrowsingPage = () => {
     // For the back button
     const navigation = useNavigation();
 
+    const [mainImage, setMainImage] = useState(product.images[0]);
+    const [showFullScreen, setShowFullScreen] = useState(false);
+
+
     return (
         <View style={{ flex: 1 }}>
 
@@ -56,24 +61,42 @@ const BrowsingPage = () => {
             <ScrollView style={styles.container}>
 
                 {/*image of the product*/}
-                <Image
-                    style={styles.productImage}
-                    source={imageMap[product.images[0]]}
-                    accessibilityLabel={product.title}
-                />
+                <TouchableOpacity onPress={() => setShowFullScreen(true)}>
+                    <Image
+                        style={styles.productImage}
+                        source={imageMap[product.images[0]]}
+                        accessibilityLabel={product.title}
+                    />
+                </TouchableOpacity>
 
                 {product.images.length > 1 && (
                     <View style={styles.prodImages}>
                         {product.images.map((imageName, index) => (
-                            <Image
-                                key={index}
-                                source={imageMap[imageName]}
-                                style={styles.previewImage}
-                                accessibilityLabel={`Preview ${index + 1}`}
-                            />
+                            <TouchableOpacity key={index} onPress={() => setMainImage(imageName)}>
+                                <Image
+                                    key={index}
+                                    source={imageMap[imageName]}
+                                    style={[styles.previewImage, imageName === mainImage && styles.selectedPreviewImage]}
+                                    accessibilityLabel={`Preview ${index + 1}`}
+                                />
+                            </TouchableOpacity>
                         ))}
                     </View>
                 )}
+
+                {showFullScreen && (
+                    <BlurView intensity={100} tint="dark" style={styles.fullScreenOverlay}>
+                        <TouchableOpacity style={styles.closeButton} onPress={() => setShowFullScreen(false)}>
+                            <Ionicons name="close" size={32} color="white" />
+                        </TouchableOpacity>
+                        <Image
+                            source={imageMap[mainImage]}
+                            style={styles.fullScreenImage}
+                            resizeMode="contain"
+                        />
+                    </BlurView>
+                )}
+
 
 
 
@@ -279,7 +302,40 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         marginRight: 20,
+    },
+
+
+    selectedPreviewImage: {
+        borderWidth: 2,
+        borderColor: '#6c63ff',
+    },
+
+    fullScreenOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 999,
+        overflow: 'hidden',
+    },
+
+    fullScreenImage: {
+        width: '90%',
+        height: '70%',
+        borderRadius: 10,
+    },
+
+    closeButton: {
+        position: 'absolute',
+        top: 40,
+        right: 20,
+        zIndex: 1000,
     }
+
+
 
 });
 
