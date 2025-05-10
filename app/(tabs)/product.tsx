@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Button} from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-{/*C'EST ICI HECTOR*/}
-import productData from "../../assets/products_data/data/sweat.json";
-{/*JUSTE AU DESSUS*/}
+// C'EST ICI HECTOR
+import productData from "../../assets/products_data/data/kanye.json";
+// JUSTE AU DESSUS
 import { useNavigation } from '@react-navigation/native';
 
 type Product = {
@@ -24,31 +24,34 @@ type Product = {
     state: string;
 };
 
-
+// ICI AUSSI LE S
 const imageMap: { [key: string]: any } = {
     'sweat.png': require('../../assets/products_data/images/sweat.png'),
     'kanye.jpeg': require('../../assets/products_data/images/kanye.jpeg'),
+    'kanye2.jpg': require('../../assets/products_data/images/kanye2.jpg'),
+    'White-Sweatshirt-Funny-Boys-Kanye-West-Fortnite-Shirt.jpeg': require('../../assets/products_data/images/White-Sweatshirt-Funny-Boys-Kanye-West-Fortnite-Shirt.jpeg'),
 };
 
 const BrowsingPage = () => {
 
-    {/*product from the json*/}
+    // product from the json*
     const product: Product = productData;
 
-    {/*State of the see more section*/}
+    // State of the see more section
     const [showMore, setShowMore] = useState(false);
 
-    {/*For the back button*/}
+    // For the back button
     const navigation = useNavigation();
 
     return (
         <View style={{ flex: 1 }}>
+
             {/* Absolute Back Button */}
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
-            <ScrollView style={styles.container}>
 
+            <ScrollView style={styles.container}>
 
                 {/*image of the product*/}
                 <Image
@@ -56,6 +59,23 @@ const BrowsingPage = () => {
                     source={imageMap[product.images[0]]}
                     accessibilityLabel={product.title}
                 />
+
+                {product.images.length > 1 && (
+                    <View style={styles.prodImages}>
+                        {product.images.map((imageName, index) => (
+                            <Image
+                                key={index}
+                                source={imageMap[imageName]}
+                                style={styles.previewImage}
+                                accessibilityLabel={`Preview ${index + 1}`}
+                            />
+                        ))}
+                    </View>
+                )}
+
+
+
+
                 <View style={styles.headProduct}>
                     <View style={styles.titleContainer}>
                         {/*title of the product*/}
@@ -158,7 +178,7 @@ const styles = StyleSheet.create({
     title: { fontSize: 24, fontWeight: 'bold' },
     sectionTitle: { fontSize: 20, fontWeight: 'bold', marginVertical: 10 },
     sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    productImage: { width: "100%", height: 250, borderRadius: 8 },
+    productImage: { width: "100%", height: 350, borderRadius: 8 },
     productName: { fontWeight: 'bold', marginTop: 10 },
     productPrice: { color: 'gray' },
     contactButton: { backgroundColor: '#6c63ff', padding: 15, borderRadius: 10, alignItems: 'center', marginTop: 20,
@@ -230,6 +250,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'gray',
         marginVertical: 10,
     },
+    prodImages: {
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 5,
+        borderRadius: 8,
+    },
+    previewImage: {
+        width: 50,
+        height: 50,
+        marginRight: 20,
+    }
 
 });
 
