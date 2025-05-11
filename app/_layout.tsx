@@ -8,12 +8,15 @@ import 'react-native-reanimated';
 import { View } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import CustomHeader from './components/CustomHeader'; // Custom header with menu icon
+import CustomHeader from './components/CustomHeader'; // Custom header with drawer, uberdrip
 
-import Home from './(tabs)/index';       // Update paths if necessary
-import Explore from './(tabs)/explore';
-import Product from './(tabs)/product';
-import Welcome from './(tabs)/welcome';
+import Home from './screens';
+import Explore from './screens/explore';
+import Product from './screens/product';
+import Welcome from './screens/welcome';
+
+
+import { Stack } from 'expo-router';
 
 import "../global.css";
 
@@ -47,8 +50,8 @@ export default function RootLayout() {
         >
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Explore" component={Explore} />
-          <Drawer.Screen name="Product" component={Product} />
-          <Drawer.Screen name="Welcome" component={Welcome} />
+          <Drawer.Screen name="Product" component={Product} options={{ headerShown: false }} />
+          <Drawer.Screen name="Welcome" component={Welcome}/>
         </Drawer.Navigator>
       </ThemeProvider>
   );

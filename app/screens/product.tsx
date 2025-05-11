@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { BlurView } from 'expo-blur';
 
+
 type Product = {
     id: number;
     title: string;
