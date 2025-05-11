@@ -6,7 +6,6 @@ import productData from "../../assets/products_data/data/kanye.json";
 // JUSTE AU DESSUS
 import { useNavigation } from '@react-navigation/native';
 
-import { Stack } from 'expo-router';
 import { BlurView } from 'expo-blur';
 
 type Product = {
@@ -178,8 +177,9 @@ const BrowsingPage = () => {
 
 
             </ScrollView>
+            {/* Showing image on click*/}
             {showFullScreen && (
-                <BlurView intensity={100} tint="dark" style={styles.fullScreenOverlay}>
+                <BlurView intensity={70} tint="dark" style={styles.fullScreenOverlay}>
                     <TouchableOpacity style={styles.closeButton} onPress={() => setShowFullScreen(false)}>
                         <Ionicons name="close" size={32} color="white" />
                     </TouchableOpacity>
@@ -199,8 +199,6 @@ const BrowsingPage = () => {
                     <Text style={styles.contactButtonText}>Buy</Text>
                 </TouchableOpacity>
             </View>
-            {/* This hides the tab bar on this screen */}
-            <Stack.Screen options={{ tabBarStyle: { display: 'none' } }} />
         </View>
 
     );
@@ -340,6 +338,8 @@ const styles = StyleSheet.create({
     sellerBox:{
         display: 'flex',
         flexDirection: 'row',
+        margin: 0,
+        padding: 0,
     },
     userImage:{
         marginRight: 20,

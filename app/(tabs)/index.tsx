@@ -29,11 +29,6 @@ const BrowsingPage = () => {
     });
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <Ionicons name="menu" size={28} color="black" />
-                <Text style={styles.title}>Uber Drip</Text>
-                <Ionicons name="lock-closed-outline" size={28} color="black" />
-            </View>
 
             <View style={styles.searchContainer}>
                 <TextInput placeholder="Search..."
