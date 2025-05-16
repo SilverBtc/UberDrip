@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, 
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 // C'EST ICI HECTOR
 import productData from "../../assets/products_data/data/kanye.json";
+import userData from "../../assets/user_data/data/youcef.json";
 // JUSTE AU DESSUS
 import { useNavigation } from '@react-navigation/native';
 
@@ -27,6 +28,19 @@ type Product = {
     state: string;
 };
 
+type User = {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    frequenceOfUse: 'Rarely' | 'Sometimes' | 'Often' | 'Very Often'; // enum-like
+    age: number;
+    city: string;
+    birthDate: string; // format YYYY/MM/DD, ou mieux : Date si parsé
+    profileImage: string; // Peut être un path local ou une URL
+};
+
+
 // ICI AUSSI LE S
 const imageMap: { [key: string]: any } = {
     'sweat.png': require('../../assets/products_data/images/sweat.png'),
@@ -38,8 +52,9 @@ const imageMap: { [key: string]: any } = {
 
 const BrowsingPage = () => {
 
-    // product from the json*
+    // product and user from their json*
     const product: Product = productData;
+    const user: User = userData;
 
     // State of the see more section
     const [showMore, setShowMore] = useState(false);
@@ -87,10 +102,10 @@ const BrowsingPage = () => {
                 {/*User profile*/}
                 <View style={styles.divider} />
                 <View style={styles.sellerBox}>
-                    <Image source={imageMap["Youcef.png"]} style={styles.userImage}></Image>
+                    <Image source={imageMap[user.profileImage]} style={styles.userImage}></Image>
                     <View>
-                        <Text>Youcef</Text>
-                        <Text style={styles.productPrice}>Publish Often</Text>
+                        <Text>{user.firstName}</Text>
+                        <Text style={styles.productPrice}>{user.frequenceOfUse}</Text>
                     </View>
                 </View>
                 <View style={styles.divider} />
@@ -348,8 +363,6 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: '100%',
     }
-
-
 });
 
 export default BrowsingPage;

@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "email": "youcef@troll.com",
+  "firstName": "Youcef",
+  "lastName": "Cheriet",
+  "frequenceOfUse": "Very Often",
+  "age": 20,
+  "city": "Villejuif",
+  "birthDate": "2005/03/07",
+  "profileImage": "Youcef.png"
+}
