@@ -22,12 +22,19 @@ const prices = ['All', '<10', '<25', '<50', '<100', 'Less than'];
 const material = ['wool', 'polyester', 'jean', 'all'];
 const sizes = ['xs', 's', 'm', 'l', 'xl', 'all'];
 
-const RadioItem = ({ label, selected, onPress }) => (
+const RadioItem = ({ label, selected, onPress, isRadio = false }) => (
     <TouchableOpacity onPress={onPress} style={styles.checkboxItem}>
-        <View style={[styles.radio, selected && styles.radioSelected]} />
+        <View style={isRadio ? styles.radio : styles.checkbox}>
+            {selected && !isRadio && <Text style={styles.checkboxTick}>✔️</Text>}
+            {isRadio && (
+                <View style={[styles.radioCircle, selected && styles.radioFilled]} />
+            )}
+
+        </View>
         <Text style={styles.checkboxLabel}>{label}</Text>
     </TouchableOpacity>
 );
+
 
 const FilterDropdown = ({ title, options, selected, setSelected, single = false, customPrice, setCustomPrice }) => {
     const [visible, setVisible] = useState(false);
@@ -62,9 +69,12 @@ const FilterDropdown = ({ title, options, selected, setSelected, single = false,
                             {options.map((option, idx) => (
                                 <View key={idx}>
                                     <RadioItem
-                                        label={option}
+                                        label={option === 'Less than' && selected.includes('Less than') && customPrice > 0
+                                            ? `Less than ${customPrice}`
+                                            : option}
                                         selected={selected.includes(option)}
                                         onPress={() => toggleSelection(option)}
+                                        isRadio={title === 'Price'}
                                     />
                                     {title === 'Price' && option === 'Less than' && selected.includes('Less than') && (
                                         <TextInput
@@ -90,6 +100,7 @@ const FilterDropdown = ({ title, options, selected, setSelected, single = false,
         </View>
     );
 };
+
 
 const BrowsingPage = () => {
     const [searchText, setSearchText] = useState('');
@@ -255,7 +266,20 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#6c63ff',
         marginRight: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
+
+    radioCircle: {
+        width: 12,
+        height: 12,
+        borderRadius: 6,
+    },
+
+    radioFilled: {
+        backgroundColor: '#6c63ff',
+    },
+
     radioSelected: {
         backgroundColor: '#6c63ff',
     },
@@ -296,6 +320,21 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 12,
     },
+    checkbox: {
+        width: 20,
+        height: 20,
+        borderWidth: 2,
+        borderColor: '#6c63ff',
+        marginRight: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    checkboxTick: {
+        fontSize: 14,
+        lineHeight: 18,
+    },
+
 });
 
 export default BrowsingPage;
