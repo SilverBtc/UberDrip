@@ -18,24 +18,34 @@ const productList = [
 ];
 
 const brands = ['All', 'Adidas', 'Nike', 'Fila'];
-const price = ['0', '<10', '<25', '<100', 'all'];
-const material = ['wool', 'polyester', 'jean', 'cum', 'all'];
+const prices = ['All', '<10', '<25', '<50', '<100', 'Less than'];
+const material = ['wool', 'polyester', 'jean', 'all'];
 const sizes = ['xs', 's', 'm', 'l', 'xl', 'all'];
 
-const CheckboxItem = ({ label, selected, onPress }) => (
+const RadioItem = ({ label, selected, onPress }) => (
     <TouchableOpacity onPress={onPress} style={styles.checkboxItem}>
-        <View style={[styles.checkbox, selected && styles.checkboxSelected]} />
+        <View style={[styles.radio, selected && styles.radioSelected]} />
         <Text style={styles.checkboxLabel}>{label}</Text>
     </TouchableOpacity>
 );
 
-const FilterDropdown = ({ title, options, selected, setSelected }) => {
+const FilterDropdown = ({ title, options, selected, setSelected, single = false, customPrice, setCustomPrice }) => {
     const [visible, setVisible] = useState(false);
 
     const toggleSelection = (option) => {
-        setSelected(prev =>
-            prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option]
-        );
+        if (single) {
+            setSelected([option]);
+        } else {
+            setSelected(prev =>
+                prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option]
+            );
+        }
+    };
+
+    const handleOutsidePress = (e) => {
+        if (e.target === e.currentTarget) {
+            setVisible(false);
+        }
     };
 
     return (
@@ -45,24 +55,37 @@ const FilterDropdown = ({ title, options, selected, setSelected }) => {
             </TouchableOpacity>
 
             <Modal transparent animationType="fade" visible={visible}>
-                <TouchableOpacity style={styles.modalOverlay} onPress={() => setVisible(false)}>
+                <View style={styles.modalOverlay} onStartShouldSetResponder={() => true} onResponderRelease={handleOutsidePress}>
                     <View style={styles.modalContent}>
                         <Text style={styles.modalTitle}>{title}</Text>
                         <ScrollView>
                             {options.map((option, idx) => (
-                                <CheckboxItem
-                                    key={idx}
-                                    label={option}
-                                    selected={selected.includes(option)}
-                                    onPress={() => toggleSelection(option)}
-                                />
+                                <View key={idx}>
+                                    <RadioItem
+                                        label={option}
+                                        selected={selected.includes(option)}
+                                        onPress={() => toggleSelection(option)}
+                                    />
+                                    {title === 'Price' && option === 'Less than' && selected.includes('Less than') && (
+                                        <TextInput
+                                            placeholder="Enter less than"
+                                            keyboardType="number-pad"
+                                            style={styles.searchInput}
+                                            value={customPrice.toString()}
+                                            onChangeText={(text) => {
+                                                const clean = text.replace(/[^0-9]/g, '');
+                                                setCustomPrice(parseInt(clean) || 0);
+                                            }}
+                                        />
+                                    )}
+                                </View>
                             ))}
                         </ScrollView>
                         <TouchableOpacity onPress={() => setVisible(false)} style={styles.modalClose}>
                             <Text style={{ color: '#fff' }}>Done</Text>
                         </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
+                </View>
             </Modal>
         </View>
     );
@@ -72,15 +95,48 @@ const BrowsingPage = () => {
     const [searchText, setSearchText] = useState('');
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedPrices, setSelectedPrices] = useState([]);
+    const [customPrice, setCustomPrice] = useState(0);
     const [selectedMaterials, setSelectedMaterials] = useState([]);
     const [selectedSizes, setSelectedSizes] = useState([]);
+
+    const clearAllFilters = () => {
+        setSelectedBrands([]);
+        setSelectedPrices([]);
+        setSelectedMaterials([]);
+        setSelectedSizes([]);
+        setSearchText('');
+        setCustomPrice(0);
+    };
 
     const filteredProducts = productList.filter(product => {
         const matchSearch = product.name.toLowerCase().includes(searchText.toLowerCase());
         const matchBrand =
             selectedBrands.length === 0 || selectedBrands.includes('All') || selectedBrands.includes(product.brand);
-        return matchBrand && matchSearch;
+
+        const matchPrice = selectedPrices.length === 0 || selectedPrices.includes('All') || selectedPrices.some(priceLabel => {
+            if (priceLabel === 'Less than' && customPrice > 0) return product.price <= customPrice;
+            if (priceLabel.startsWith('<')) {
+                const max = parseInt(priceLabel.replace('<', ''), 10);
+                return product.price <= max;
+            }
+            return false;
+        });
+
+        return matchBrand && matchSearch && matchPrice;
     });
+
+    const renderSelectedTags = (label, values) => {
+        return values.length > 0 ? (
+            <View style={styles.selectedGroup}>
+                <Text style={styles.selectedLabel}>{label}:</Text>
+                <View style={styles.selectedTags}>
+                    {values.map((v, i) => (
+                        <View key={i} style={styles.tag}><Text style={styles.tagText}>{v}</Text></View>
+                    ))}
+                </View>
+            </View>
+        ) : null;
+    };
 
     return (
         <ScrollView style={styles.container}>
@@ -97,10 +153,19 @@ const BrowsingPage = () => {
 
             <View style={styles.filtersRow}>
                 <FilterDropdown title="Brand" options={brands} selected={selectedBrands} setSelected={setSelectedBrands} />
-                <FilterDropdown title="Price" options={price} selected={selectedPrices} setSelected={setSelectedPrices} />
+                <FilterDropdown title="Price" options={prices} selected={selectedPrices} setSelected={setSelectedPrices} single={true} customPrice={customPrice} setCustomPrice={setCustomPrice} />
                 <FilterDropdown title="Material" options={material} selected={selectedMaterials} setSelected={setSelectedMaterials} />
                 <FilterDropdown title="Size" options={sizes} selected={selectedSizes} setSelected={setSelectedSizes} />
             </View>
+
+            <TouchableOpacity onPress={clearAllFilters} style={styles.clearAllButton}>
+                <Text style={styles.clearAllText}>Clear All Filters</Text>
+            </TouchableOpacity>
+
+            {renderSelectedTags('Brands', selectedBrands)}
+            {renderSelectedTags('Prices', selectedPrices)}
+            {renderSelectedTags('Materials', selectedMaterials)}
+            {renderSelectedTags('Sizes', selectedSizes)}
 
             <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Recommended Clothes</Text>
@@ -183,19 +248,53 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 8,
     },
-    checkbox: {
+    radio: {
         width: 20,
         height: 20,
-        borderRadius: 4,
+        borderRadius: 10,
         borderWidth: 2,
         borderColor: '#6c63ff',
         marginRight: 10,
     },
-    checkboxSelected: {
+    radioSelected: {
         backgroundColor: '#6c63ff',
     },
     checkboxLabel: {
         fontSize: 16,
+    },
+    clearAllButton: {
+        alignSelf: 'flex-end',
+        marginBottom: 20,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        backgroundColor: '#eee',
+        borderRadius: 6,
+    },
+    clearAllText: {
+        color: '#444',
+        fontWeight: 'bold',
+    },
+    selectedGroup: {
+        marginBottom: 10,
+    },
+    selectedLabel: {
+        fontWeight: 'bold',
+        marginBottom: 4,
+    },
+    selectedTags: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 6,
+    },
+    tag: {
+        backgroundColor: '#6c63ff',
+        borderRadius: 12,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+    },
+    tagText: {
+        color: '#fff',
+        fontSize: 12,
     },
 });
 
