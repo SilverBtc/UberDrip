@@ -1,109 +1,80 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import GoogleLogo from '../../assets/images/Google__G__logo.svg';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+export default function LoginScreen() {
+  const [login, setLogin] = useState('');
+  const [mdp, setMdp] = useState('');
 
-export default function TabTwoScreen() {
+  const handleLogin = () => {
+    console.log('Login', `Login: ${login}\nMot de passe: ${mdp}`);
+  };
+
+  const handleRegister = () => {
+    console.log('Register', 'Redirection vers l\'inscription');
+  };
+
+  const handleGoogleLogin = () => {
+    console.log('Google Login', 'Connexion avec Google');
+  };
+
+  const handleForgotPassword = () => {
+    console.log('Mot de passe oublié', 'Redirection pour récupérer le mot de passe');
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <View className="flex-1 bg-white justify-center px-5">
+      <Text className="text-4xl font-bold text-center mb-10">Welcome</Text>
+
+      <TextInput
+        placeholder="Login"
+        value={login}
+        onChangeText={setLogin}
+        autoCapitalize="none"
+        className="border border-gray-400 rounded-lg px-4 py-3 mb-4 text-base"
+      />
+
+      <TextInput
+        placeholder="MDP"
+        value={mdp}
+        onChangeText={setMdp}
+        secureTextEntry
+        className="border border-gray-400 rounded-lg px-4 py-3 mb-4 text-base"
+      />
+
+      <View className="flex-row justify-between mb-5">
+        <TouchableOpacity
+          onPress={handleRegister}
+          className="bg-gray-400 py-3 px-6 rounded-lg"
+        >
+          <Text className="text-white font-bold">Register</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleLogin}
+          className="bg-blue-500 py-3 px-6 rounded-lg"
+        >
+          <Text className="text-white font-bold">Login</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity onPress={handleForgotPassword}>
+        <Text className="text-blue-500 text-center mb-6">Forget MDP ?</Text>
+      </TouchableOpacity>
+
+      <View className="flex-row items-center mb-6">
+        <View className="flex-1 h-px bg-gray-300" />
+        <Text className="mx-4 text-gray-500 font-semibold">OR</Text>
+        <View className="flex-1 h-px bg-gray-300" />
+      </View>
+
+      <TouchableOpacity
+        onPress={handleGoogleLogin}
+        className="flex-row items-center justify-center border-2 border-[#D9F0FF] rounded-lg py-3"
+      >
+        <GoogleLogo width={20} height={20} className="mr-2" />
+        <Text className="text-base font-semibold">Log in with Google</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
