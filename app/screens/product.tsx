@@ -36,7 +36,6 @@ type User = {
     frequenceOfUse: 'Rarely' | 'Sometimes' | 'Often' | 'Very Often'; // enum-like
     age: number;
     city: string;
-    birthDate: string; // format YYYY/MM/DD, ou mieux : Date si parsé
     profileImage: string; // Peut être un path local ou une URL
 };
 
