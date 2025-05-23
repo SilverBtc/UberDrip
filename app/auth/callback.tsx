@@ -19,14 +19,14 @@ export default function AuthCallback() {
             console.error("Error exchanging code for session:", error);
           } else {
             console.log("Auth successful:", data.user);
-            // Rediriger vers l'écran principal
+            // Redirect to the main screen
             router.replace("/");
           }
         } catch (error) {
           console.error("Auth callback error:", error);
         }
       } else {
-        // Pas de code, rediriger vers login
+        // No code, redirect to login
         router.replace("/screens/welcome");
       }
     };
@@ -36,7 +36,7 @@ export default function AuthCallback() {
 
   return (
     <View className="flex-1 justify-center items-center">
-      <Text>Authentification en cours...</Text>
+      <Text>Authentication in progress...</Text>
     </View>
   );
 }

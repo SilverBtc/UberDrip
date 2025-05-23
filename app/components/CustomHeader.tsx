@@ -14,9 +14,9 @@ export default function CustomHeader() {
   const { user, signOut } = useAuth();
 
   const handleSignOut = () => {
-    Alert.alert("Déconnexion", "Êtes-vous sûr de vouloir vous déconnecter ?", [
-      { text: "Annuler", style: "cancel" },
-      { text: "Déconnexion", onPress: signOut },
+    Alert.alert("Sign Out", "Are you sure you want to sign out?", [
+      { text: "Cancel", style: "cancel" },
+      { text: "Sign Out", onPress: signOut },
     ]);
   };
 
@@ -38,7 +38,6 @@ export default function CustomHeader() {
       <View className="h-16 flex-row items-center justify-between px-4">
         <View className="flex-row items-center">
           <Text className="text-2xl font-bold text-purple-600">UberDrip</Text>
-          <Text className="text-xs text-gray-500 ml-2">✨</Text>
         </View>
 
         <View className="flex-row items-center space-x-4">

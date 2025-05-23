@@ -45,7 +45,7 @@ const sizes = ["xs", "s", "m", "l", "xl", "all"];
 const RadioItem = ({ label, selected, onPress, isRadio = false }) => (
   <TouchableOpacity onPress={onPress} style={styles.checkboxItem}>
     <View style={isRadio ? styles.radio : styles.checkbox}>
-      {selected && !isRadio && <Text style={styles.checkboxTick}>✔️</Text>}
+      {selected && !isRadio && <Text style={styles.checkboxTick}>✓</Text>}
       {isRadio && (
         <View style={[styles.radioCircle, selected && styles.radioFilled]} />
       )}
@@ -205,32 +205,32 @@ const BrowsingPage = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.welcomeSection}>
-        <Text style={styles.welcomeTitle}>Bienvenue sur UberDrip! 👋</Text>
+        <Text style={styles.welcomeTitle}>Welcome to UberDrip!</Text>
         <Text style={styles.welcomeSubtitle}>
-          Découvrez les dernières tendances mode
+          Discover the latest fashion trends
         </Text>
       </View>
 
       <View style={styles.searchContainer}>
         <TextInput
-          placeholder="Rechercher des vêtements..."
+          placeholder="Search for clothes..."
           style={styles.searchInput}
           value={searchText}
           onChangeText={setSearchText}
         />
       </View>
 
-      <Text style={styles.sectionTitle}>Filtres:</Text>
+      <Text style={styles.sectionTitle}>Filters:</Text>
 
       <View style={styles.filtersRow}>
         <FilterDropdown
-          title="Marque"
+          title="Brand"
           options={brands}
           selected={selectedBrands}
           setSelected={setSelectedBrands}
         />
         <FilterDropdown
-          title="Prix"
+          title="Price"
           options={prices}
           selected={selectedPrices}
           setSelected={setSelectedPrices}
@@ -239,13 +239,13 @@ const BrowsingPage = () => {
           setCustomPrice={setCustomPrice}
         />
         <FilterDropdown
-          title="Matière"
+          title="Material"
           options={material}
           selected={selectedMaterials}
           setSelected={setSelectedMaterials}
         />
         <FilterDropdown
-          title="Taille"
+          title="Size"
           options={sizes}
           selected={selectedSizes}
           setSelected={setSelectedSizes}
@@ -253,17 +253,17 @@ const BrowsingPage = () => {
       </View>
 
       <TouchableOpacity onPress={clearAllFilters} style={styles.clearAllButton}>
-        <Text style={styles.clearAllText}>Effacer tous les filtres</Text>
+        <Text style={styles.clearAllText}>Clear all filters</Text>
       </TouchableOpacity>
 
-      {renderSelectedTags("Marques", selectedBrands)}
-      {renderSelectedTags("Prix", selectedPrices)}
-      {renderSelectedTags("Matières", selectedMaterials)}
-      {renderSelectedTags("Tailles", selectedSizes)}
+      {renderSelectedTags("Brands", selectedBrands)}
+      {renderSelectedTags("Prices", selectedPrices)}
+      {renderSelectedTags("Materials", selectedMaterials)}
+      {renderSelectedTags("Sizes", selectedSizes)}
 
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Vêtements Recommandés</Text>
-        <Text style={styles.viewAll}>Voir tout</Text>
+        <Text style={styles.sectionTitle}>Recommended Clothes</Text>
+        <Text style={styles.viewAll}>View all</Text>
       </View>
 
       <ScrollView

@@ -14,7 +14,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!login || !mdp) {
-      Alert.alert("Erreur", "Veuillez remplir tous les champs");
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
@@ -30,14 +30,14 @@ export default function LoginScreen() {
       console.log("Login successful:", data.user);
       // La redirection sera automatique grâce au contexte d'authentification
     } catch (error: any) {
-      Alert.alert("Erreur de connexion", error.message);
+      Alert.alert("Connection Error", error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleRegister = () => {
-    console.log("Register", "Redirection vers l'inscription");
+    console.log("Register", "Redirect to registration");
   };
 
   const handleGoogleLogin = async () => {
@@ -47,11 +47,10 @@ export default function LoginScreen() {
       // Note: Pour React Native, l'utilisateur sera redirigé vers le navigateur
       // La session sera mise à jour automatiquement quand il reviendra
     } catch (error: any) {
-      console.error("Erreur Google:", error);
+      console.error("Google Error:", error);
       Alert.alert(
-        "Erreur Google",
-        error.message ||
-          "Une erreur est survenue lors de la connexion avec Google"
+        "Google Error",
+        error.message || "An error occurred while signing in with Google"
       );
     } finally {
       setIsGoogleLoading(false);
@@ -59,10 +58,7 @@ export default function LoginScreen() {
   };
 
   const handleForgotPassword = () => {
-    console.log(
-      "Mot de passe oublié",
-      "Redirection pour récupérer le mot de passe"
-    );
+    console.log("Forgot Password", "Redirect to password recovery");
   };
 
   return (
@@ -70,7 +66,7 @@ export default function LoginScreen() {
       <Text className="text-4xl font-bold text-center mb-10">Welcome</Text>
 
       <TextInput
-        placeholder="Login"
+        placeholder="Email"
         value={login}
         onChangeText={setLogin}
         autoCapitalize="none"
@@ -79,7 +75,7 @@ export default function LoginScreen() {
       />
 
       <TextInput
-        placeholder="MDP"
+        placeholder="Password"
         value={mdp}
         onChangeText={setMdp}
         secureTextEntry
@@ -101,13 +97,13 @@ export default function LoginScreen() {
           disabled={isLoading || isGoogleLoading}
         >
           <Text className="text-white font-bold">
-            {isLoading ? "Connexion..." : "Login"}
+            {isLoading ? "Connecting..." : "Login"}
           </Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={handleForgotPassword}>
-        <Text className="text-blue-500 text-center mb-6">Forget MDP ?</Text>
+        <Text className="text-blue-500 text-center mb-6">Forgot Password?</Text>
       </TouchableOpacity>
 
       <View className="flex-row items-center mb-6">
@@ -123,9 +119,7 @@ export default function LoginScreen() {
       >
         <GoogleLogo width={20} height={20} className="mr-2" />
         <Text className="text-base font-semibold">
-          {isGoogleLoading
-            ? "Ouverture du navigateur..."
-            : "Log in with Google"}
+          {isGoogleLoading ? "Opening browser..." : "Log in with Google"}
         </Text>
       </TouchableOpacity>
     </View>

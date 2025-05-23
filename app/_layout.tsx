@@ -72,14 +72,14 @@ function AppContent() {
             name="Home"
             component={Home}
             options={{
-              tabBarLabel: "Accueil",
+              tabBarLabel: "Home",
             }}
           />
           <Tab.Screen
             name="Explore"
             component={Explore}
             options={{
-              tabBarLabel: "Explorer",
+              tabBarLabel: "Explore",
             }}
           />
           <Tab.Screen
@@ -87,7 +87,7 @@ function AppContent() {
             component={Product}
             options={{
               headerShown: false,
-              tabBarLabel: "Produits",
+              tabBarLabel: "Products",
               tabBarStyle: { display: "none" },
             }}
           />
