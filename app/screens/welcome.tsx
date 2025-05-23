@@ -1,25 +1,71 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import GoogleLogo from '../../assets/images/Google__G__logo.svg';
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import GoogleLogo from "../../assets/images/Google__G__logo.svg";
+import { signInWithGoogle, getCurrentUser } from "../../lib/auth";
+import { supabase } from "../../lib/supabase";
 
 export default function LoginScreen() {
-  const [login, setLogin] = useState('');
-  const [mdp, setMdp] = useState('');
+  const [login, setLogin] = useState("");
+  const [mdp, setMdp] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    console.log('Login', `Login: ${login}\nMot de passe: ${mdp}`);
+  useEffect(() => {
+    // Écouter les changements d'état d'authentification
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) {
+        console.log("User signed in:", session.user);
+        // Rediriger vers l'écran principal
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogin = async () => {
+    if (!login || !mdp) {
+      Alert.alert("Erreur", "Veuillez remplir tous les champs");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: login,
+        password: mdp,
+      });
+
+      if (error) throw error;
+
+      console.log("Login successful:", data.user);
+    } catch (error: any) {
+      Alert.alert("Erreur de connexion", error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRegister = () => {
-    console.log('Register', 'Redirection vers l\'inscription');
+    console.log("Register", "Redirection vers l'inscription");
   };
 
-  const handleGoogleLogin = () => {
-    console.log('Google Login', 'Connexion avec Google');
+  const handleGoogleLogin = async () => {
+    try {
+      setIsLoading(true);
+      await signInWithGoogle();
+    } catch (error: any) {
+      Alert.alert("Erreur Google", error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleForgotPassword = () => {
-    console.log('Mot de passe oublié', 'Redirection pour récupérer le mot de passe');
+    console.log(
+      "Mot de passe oublié",
+      "Redirection pour récupérer le mot de passe"
+    );
   };
 
   return (
@@ -31,6 +77,7 @@ export default function LoginScreen() {
         value={login}
         onChangeText={setLogin}
         autoCapitalize="none"
+        keyboardType="email-address"
         className="border border-gray-400 rounded-lg px-4 py-3 mb-4 text-base"
       />
 
@@ -46,6 +93,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           onPress={handleRegister}
           className="bg-gray-400 py-3 px-6 rounded-lg"
+          disabled={isLoading}
         >
           <Text className="text-white font-bold">Register</Text>
         </TouchableOpacity>
@@ -53,8 +101,11 @@ export default function LoginScreen() {
         <TouchableOpacity
           onPress={handleLogin}
           className="bg-blue-500 py-3 px-6 rounded-lg"
+          disabled={isLoading}
         >
-          <Text className="text-white font-bold">Login</Text>
+          <Text className="text-white font-bold">
+            {isLoading ? "Connexion..." : "Login"}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -71,9 +122,12 @@ export default function LoginScreen() {
       <TouchableOpacity
         onPress={handleGoogleLogin}
         className="flex-row items-center justify-center border-2 border-[#D9F0FF] rounded-lg py-3"
+        disabled={isLoading}
       >
         <GoogleLogo width={20} height={20} className="mr-2" />
-        <Text className="text-base font-semibold">Log in with Google</Text>
+        <Text className="text-base font-semibold">
+          {isLoading ? "Connexion..." : "Log in with Google"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
