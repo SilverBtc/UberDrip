@@ -1,48 +1,68 @@
 import { supabase } from "./supabase";
-import * as WebBrowser from "expo-web-browser";
-import * as Linking from "expo-linking";
-import { makeRedirectUri } from "expo-auth-session";
+import { Platform, Alert, Linking } from "react-native";
 
-// Configuration pour Expo
-WebBrowser.maybeCompleteAuthSession();
+export async function signInWithGoogle() {
+  try {
+    if (Platform.OS === "web") {
+      // Pour le web, utiliser la redirection standard
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+      if (error) throw error;
+      return data;
+    } else {
+      // Pour React Native, on ouvre le navigateur externe
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "uberdrip://auth/callback",
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
+      });
 
-export const signInWithGoogle = async () => {
-  const redirectUrl = makeRedirectUri({
-    scheme: "uberdrip",
-    path: "auth/callback",
-  });
+      if (error) throw error;
 
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: redirectUrl,
-    },
-  });
+      // Ouvrir l'URL dans le navigateur
+      if (data.url) {
+        const supported = await Linking.canOpenURL(data.url);
+        if (supported) {
+          await Linking.openURL(data.url);
+        } else {
+          throw new Error("Impossible d'ouvrir le navigateur");
+        }
+      }
 
-  if (error) {
-    console.error("Error signing in with Google:", error.message);
+      return data;
+    }
+  } catch (error: any) {
+    console.error("Erreur lors de la connexion Google:", error);
     throw error;
   }
+}
 
-  return data;
-};
-
-export const signOut = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.error("Error signing out:", error.message);
-    throw error;
-  }
-};
-
-export const getCurrentUser = async () => {
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-  if (error) {
-    console.error("Error getting user:", error.message);
+export async function getCurrentUser() {
+  try {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+    if (error) throw error;
+    return user;
+  } catch (error: any) {
+    console.error("Erreur lors de la récupération de l'utilisateur:", error);
     return null;
   }
-  return user;
-};
+}
+
+export async function signOut() {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error: any) {
+    console.error("Erreur lors de la déconnexion:", error);
+    throw error;
+  }
+}

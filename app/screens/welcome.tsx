@@ -1,27 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import GoogleLogo from "../../assets/images/Google__G__logo.svg";
-import { signInWithGoogle, getCurrentUser } from "../../lib/auth";
+import { signInWithGoogle } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function LoginScreen() {
   const [login, setLogin] = useState("");
   const [mdp, setMdp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    // Écouter les changements d'état d'authentification
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        console.log("User signed in:", session.user);
-        // Rediriger vers l'écran principal
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const { user } = useAuth();
 
   const handleLogin = async () => {
     if (!login || !mdp) {
@@ -39,6 +28,7 @@ export default function LoginScreen() {
       if (error) throw error;
 
       console.log("Login successful:", data.user);
+      // La redirection sera automatique grâce au contexte d'authentification
     } catch (error: any) {
       Alert.alert("Erreur de connexion", error.message);
     } finally {
@@ -52,12 +42,19 @@ export default function LoginScreen() {
 
   const handleGoogleLogin = async () => {
     try {
-      setIsLoading(true);
+      setIsGoogleLoading(true);
       await signInWithGoogle();
+      // Note: Pour React Native, l'utilisateur sera redirigé vers le navigateur
+      // La session sera mise à jour automatiquement quand il reviendra
     } catch (error: any) {
-      Alert.alert("Erreur Google", error.message);
+      console.error("Erreur Google:", error);
+      Alert.alert(
+        "Erreur Google",
+        error.message ||
+          "Une erreur est survenue lors de la connexion avec Google"
+      );
     } finally {
-      setIsLoading(false);
+      setIsGoogleLoading(false);
     }
   };
 
@@ -93,7 +90,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           onPress={handleRegister}
           className="bg-gray-400 py-3 px-6 rounded-lg"
-          disabled={isLoading}
+          disabled={isLoading || isGoogleLoading}
         >
           <Text className="text-white font-bold">Register</Text>
         </TouchableOpacity>
@@ -101,7 +98,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           onPress={handleLogin}
           className="bg-blue-500 py-3 px-6 rounded-lg"
-          disabled={isLoading}
+          disabled={isLoading || isGoogleLoading}
         >
           <Text className="text-white font-bold">
             {isLoading ? "Connexion..." : "Login"}
@@ -122,11 +119,13 @@ export default function LoginScreen() {
       <TouchableOpacity
         onPress={handleGoogleLogin}
         className="flex-row items-center justify-center border-2 border-[#D9F0FF] rounded-lg py-3"
-        disabled={isLoading}
+        disabled={isLoading || isGoogleLoading}
       >
         <GoogleLogo width={20} height={20} className="mr-2" />
         <Text className="text-base font-semibold">
-          {isLoading ? "Connexion..." : "Log in with Google"}
+          {isGoogleLoading
+            ? "Ouverture du navigateur..."
+            : "Log in with Google"}
         </Text>
       </TouchableOpacity>
     </View>

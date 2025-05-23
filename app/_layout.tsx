@@ -1,33 +1,104 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-import { View } from 'react-native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-import CustomHeader from './components/CustomHeader'; // Custom header with drawer, uberdrip
+import { useColorScheme } from "@/hooks/useColorScheme";
+import CustomHeader from "./components/CustomHeader";
+import { AuthProvider } from "../contexts/AuthContext";
+import { AuthGuard } from "../components/AuthGuard";
 
-import Home from './screens';
-import Explore from './screens/explore';
-import Product from './screens/product';
-import Welcome from './screens/welcome';
-
-
-import { Stack } from 'expo-router';
+import Home from "./screens";
+import Explore from "./screens/explore";
+import Product from "./screens/product";
 
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
+
+function AppContent() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <StatusBar style="auto" />
+      <AuthGuard>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            header: () => <CustomHeader />,
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName: keyof typeof Ionicons.glyphMap;
+
+              if (route.name === "Home") {
+          iconName = focused ? "home" : "home-outline";
+              } else if (route.name === "Explore") {
+          iconName = focused ? "search" : "search-outline";
+              } else if (route.name === "Product") {
+          iconName = focused ? "shirt" : "shirt-outline";
+              } else {
+          iconName = "ellipse-outline";
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarActiveTintColor: "#6c63ff",
+            tabBarInactiveTintColor: "gray",
+            tabBarStyle: {
+              backgroundColor: "white",
+              borderTopWidth: 1,
+              borderTopColor: "#e0e0e0",
+              height: 60,
+              paddingBottom: 8,
+              paddingTop: 8,
+            },
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: "600",
+              paddingBottom: 40,
+            },
+          })}
+        >
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarLabel: "Accueil",
+            }}
+          />
+          <Tab.Screen
+            name="Explore"
+            component={Explore}
+            options={{
+              tabBarLabel: "Explorer",
+            }}
+          />
+          <Tab.Screen
+            name="Product"
+            component={Product}
+            options={{
+              headerShown: false,
+              tabBarLabel: "Produits",
+            }}
+          />
+        </Tab.Navigator>
+      </AuthGuard>
+    </ThemeProvider>
+  );
+}
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
@@ -41,18 +112,8 @@ export default function RootLayout() {
   }
 
   return (
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <StatusBar style="auto" />
-        <Drawer.Navigator
-            screenOptions={{
-              header: () => <CustomHeader />, // Your custom header here
-            }}
-        >
-          <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="Explore" component={Explore} />
-          <Drawer.Screen name="Product" component={Product} options={{ headerShown: false }} />
-          <Drawer.Screen name="Welcome" component={Welcome}/>
-        </Drawer.Navigator>
-      </ThemeProvider>
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
