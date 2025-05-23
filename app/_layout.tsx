@@ -40,13 +40,13 @@ function AppContent() {
               let iconName: keyof typeof Ionicons.glyphMap;
 
               if (route.name === "Home") {
-          iconName = focused ? "home" : "home-outline";
+                iconName = focused ? "home" : "home-outline";
               } else if (route.name === "Explore") {
-          iconName = focused ? "search" : "search-outline";
+                iconName = focused ? "search" : "search-outline";
               } else if (route.name === "Product") {
-          iconName = focused ? "shirt" : "shirt-outline";
+                iconName = focused ? "shirt" : "shirt-outline";
               } else {
-          iconName = "ellipse-outline";
+                iconName = "ellipse-outline";
               }
 
               return <Ionicons name={iconName} size={size} color={color} />;
@@ -88,6 +88,7 @@ function AppContent() {
             options={{
               headerShown: false,
               tabBarLabel: "Produits",
+              tabBarStyle: { display: "none" },
             }}
           />
         </Tab.Navigator>
