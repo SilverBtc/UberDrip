@@ -277,7 +277,6 @@ export default function ProfileScreen() {
       {/* Header */}
       <View 
         className="bg-white shadow-sm border-b border-gray-100"
-        style={{ paddingTop: statusBarHeight }}
       >
         <View className="px-4 py-4 flex-row items-center justify-between">
           <Text className="text-xl font-bold text-gray-800">Profile</Text>          <TouchableOpacity

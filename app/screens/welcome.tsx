@@ -39,13 +39,12 @@ export default function LoginScreen() {
   const handleRegister = () => {
     console.log("Register", "Redirect to registration");
   };
-
   const handleGoogleLogin = async () => {
     try {
       setIsGoogleLoading(true);
-      await signInWithGoogle();
-      // Note: Pour React Native, l'utilisateur sera redirigé vers le navigateur
-      // La session sera mise à jour automatiquement quand il reviendra
+      const result = await signInWithGoogle();
+      console.log("Google login result:", result);
+      // La redirection sera automatique grâce au contexte d'authentification
     } catch (error: any) {
       console.error("Google Error:", error);
       Alert.alert(
@@ -117,9 +116,8 @@ export default function LoginScreen() {
         className="flex-row items-center justify-center border-2 border-[#D9F0FF] rounded-lg py-3"
         disabled={isLoading || isGoogleLoading}
       >
-        <GoogleLogo width={20} height={20} className="mr-2" />
-        <Text className="text-base font-semibold">
-          {isGoogleLoading ? "Opening browser..." : "Log in with Google"}
+        <GoogleLogo width={20} height={20} className="mr-2" />        <Text className="text-base font-semibold">
+          {isGoogleLoading ? "Signing in..." : "Log in with Google"}
         </Text>
       </TouchableOpacity>
     </View>

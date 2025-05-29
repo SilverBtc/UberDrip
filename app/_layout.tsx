@@ -1,3 +1,7 @@
+// Import polyfills first to ensure they're available
+import "react-native-url-polyfill/auto";
+import "react-native-get-random-values";
+
 import {
     DarkTheme,
     DefaultTheme,
@@ -11,6 +15,21 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+
+// Disable specific warnings for presentation
+import { LogBox } from 'react-native';
+
+// Environment-based error overlay control
+const isPresentationMode = process.env.EXPO_PUBLIC_PRESENTATION_MODE === 'true';
+
+if (isPresentationMode) {
+    LogBox.ignoreAllLogs(true);
+} else {
+    LogBox.ignoreLogs([
+        'Text strings must be rendered within a <Text> component',
+        'Warning: Text strings must be rendered within a <Text> component',
+    ]);
+}
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import CustomHeader from "./components/CustomHeader";
@@ -55,14 +74,14 @@ function AppContent() {
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
                     tabBarActiveTintColor: "#6c63ff",
-                    tabBarInactiveTintColor: "gray",
-                    tabBarStyle: {
+                    tabBarInactiveTintColor: "gray",                    tabBarStyle: {
                         backgroundColor: "white",
                         borderTopWidth: 1,
                         borderTopColor: "#e0e0e0",
                         height: 60,
                         paddingBottom: 8,
                         paddingTop: 8,
+                        marginBottom: 18,
                     },
                     tabBarLabelStyle: {
                         fontSize: 12,

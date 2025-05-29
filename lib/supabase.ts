@@ -8,13 +8,18 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    // Pour React Native, on n'utilise pas de redirect URL
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: Platform.OS === "web",
-    // Configure the redirect URL for web OAuth
+    // Configure the redirect URL for different platforms
     ...(Platform.OS === "web" && {
       redirectTo: process.env.EXPO_PUBLIC_REDIRECT_URL || "https://uberdrip.pages.dev/auth/callback"
     }),
+  },
+  realtime: {
+    // Disable realtime WebSockets on React Native to prevent ws module issues
+    params: Platform.OS !== "web" ? {
+      eventsPerSecond: 0,
+    } : {},
   },
 });

@@ -44,7 +44,6 @@ export default function ExploreScreen() {
             {/* Header with Search */}
             <View
                 className="bg-white shadow-sm border-b border-gray-100"
-                style={{ paddingTop: statusBarHeight }}
             >
                 <View className="px-4 py-4">
                     {/* Location Header */}

@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginBottom: 20,
         flexWrap: "wrap",
-        gap: 8,
+        gap: 4,
     },
     filterWrapper: {
         flex: 1,
