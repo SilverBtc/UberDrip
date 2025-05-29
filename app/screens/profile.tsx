@@ -16,7 +16,6 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { InstallButton } from '../../components/InstallButton';
 
 interface UserProfile {
   id: string;
@@ -536,20 +535,7 @@ export default function ProfileScreen() {
                 <Text className="ml-3 text-gray-700">Help & Support</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color="#ccc" />
-            </TouchableOpacity>          </View>
-        </View>
-
-        {/* PWA Install Section */}
-        <View className="bg-white mx-4 mt-4 rounded-2xl p-4 shadow-sm">
-          <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center flex-1">
-              <Ionicons name="download-outline" size={20} color="#6c63ff" />
-              <View className="ml-3 flex-1">
-                <Text className="text-gray-700 font-medium">Install App</Text>
-                <Text className="text-gray-500 text-sm">Get the full app experience</Text>
-              </View>
-            </View>
-            <InstallButton />
+            </TouchableOpacity>
           </View>
         </View>
 

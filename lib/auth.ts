@@ -4,21 +4,9 @@ import { Platform, Alert, Linking } from "react-native";
 export async function signInWithGoogle() {
   try {
     if (Platform.OS === "web") {
-      // Get the current domain for redirect
-      const currentDomain = typeof window !== 'undefined' 
-        ? window.location.origin 
-        : process.env.EXPO_PUBLIC_APP_URL || 'https://uberdrip.pages.dev';
-      
-      // Pour le web, utiliser la redirection avec le bon domaine
+      // Pour le web, utiliser la redirection standard
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: `${currentDomain}/auth/callback`,
-          queryParams: {
-            access_type: "offline",
-            prompt: "consent",
-          },
-        },
       });
       if (error) throw error;
       return data;
