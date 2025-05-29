@@ -28,6 +28,9 @@ if (isPresentationMode) {
     LogBox.ignoreLogs([
         'Text strings must be rendered within a <Text> component',
         'Warning: Text strings must be rendered within a <Text> component',
+        'Route "./components/ThemeProvider.tsx" is missing the required default export',
+        'Warning: Route',
+        'missing the required default export'
     ]);
 }
 

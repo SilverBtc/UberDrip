@@ -14,7 +14,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     return (
       <View className="flex-1 justify-center items-center bg-white">
         <ActivityIndicator size="large" color="#0000ff" />
-        <Text className="mt-4 text-gray-600">Chargement...</Text>
+        <Text className="mt-4 text-gray-600">Loading...</Text>
       </View>
     );
   }
@@ -23,5 +23,5 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     return <Welcome />;
   }
 
-  return <>{children}</>;
+  return <View style={{ flex: 1 }}>{children}</View>;
 };
