@@ -4,9 +4,13 @@ import { Platform, Alert, Linking } from "react-native";
 export async function signInWithGoogle() {
   try {
     if (Platform.OS === "web") {
-      // Pour le web, utiliser la redirection standard
+      // Pour le web, utiliser la redirection standard avec l'URL de production
+      const redirectUrl = process.env.EXPO_PUBLIC_REDIRECT_URL || "https://uberdrip.pages.dev/auth/callback";
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
+        options: {
+          redirectTo: redirectUrl,
+        },
       });
       if (error) throw error;
       return data;

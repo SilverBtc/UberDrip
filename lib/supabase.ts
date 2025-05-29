@@ -12,5 +12,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: Platform.OS === "web",
+    // Configure the redirect URL for web OAuth
+    ...(Platform.OS === "web" && {
+      redirectTo: process.env.EXPO_PUBLIC_REDIRECT_URL || "https://uberdrip.pages.dev/auth/callback"
+    }),
   },
 });
