@@ -33,7 +33,7 @@ type User = {
     email: string;
     firstName: string;
     lastName: string;
-    frequenceOfUse: 'Rarely' | 'Sometimes' | 'Often' | 'Very Often'; // enum-like
+    frequenceOfUse: string; // Changed from enum to string to match data
     age: number;
     city: string;
     profileImage: string; // Peut être un path local ou une URL
@@ -62,121 +62,111 @@ const BrowsingPage = () => {
     const navigation = useNavigation();
 
     const [mainImage, setMainImage] = useState(product.images[0]);
-    const [showFullScreen, setShowFullScreen] = useState(false);
-
-
-    return (
-        <View style={{ flex: 1 }}>
-
-            {/* Absolute Back Button */}
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                <Ionicons name="arrow-back" size={24} color="black" />
+    const [showFullScreen, setShowFullScreen] = useState(false);    return (
+        <View className="flex-1">            {/* Absolute Back Button */}
+            <TouchableOpacity 
+                className="absolute top-10 left-5 z-50 bg-white p-2 rounded-full shadow-lg border border-gray-100"
+                onPress={() => navigation.goBack()}
+            >
+                <Ionicons name="arrow-back" size={24} color="#6c63ff" />
             </TouchableOpacity>
 
-            <ScrollView style={styles.container}>
-
-                {/*image of the product*/}
+            <ScrollView className="flex-1 p-5 bg-white">                {/*image of the product*/}
                 <TouchableOpacity onPress={() => setShowFullScreen(true)}>
                     <Image
-                        style={styles.productImage}
+                        style={imageStyles.mainProductImage}
                         source={imageMap[mainImage]}
                         accessibilityLabel={product.title}
+                        resizeMode="cover"
                     />
-                </TouchableOpacity>
-
-                {product.images.length > 1 && (
-                    <View style={styles.prodImages}>
+                </TouchableOpacity>                {product.images.length > 1 && (
+                    <View className="flex-row mt-4 space-x-3">
                         {product.images.map((imageName, index) => (
                             <TouchableOpacity key={index} onPress={() => setMainImage(imageName)}>
                                 <Image
                                     key={index}
                                     source={imageMap[imageName]}
-                                    style={[styles.previewImage, imageName === mainImage && styles.selectedPreviewImage]}
+                                    style={imageName === mainImage ? imageStyles.thumbnailImageSelected : imageStyles.thumbnailImage}
                                     accessibilityLabel={`Preview ${index + 1}`}
+                                    resizeMode="cover"
                                 />
                             </TouchableOpacity>
                         ))}
                     </View>
-                )}
-                {/*User profile*/}
-                <View style={styles.divider} />
-                <View style={styles.sellerBox}>
-                    <Image source={imageMap[user.profileImage]} style={styles.userImage}></Image>
+                )}{/*User profile*/}
+                <View className="h-px bg-gray-400 my-4" />                <View className="flex-row items-center">
+                    <Image source={imageMap[user.profileImage]} style={imageStyles.userProfileImage}></Image>
                     <View>
-                        <Text>{user.firstName}</Text>
-                        <Text style={styles.productPrice}>{user.frequenceOfUse}</Text>
+                        <Text className="font-semibold text-gray-900">{user.firstName}</Text>
+                        <Text className="text-gray-500 text-sm">{user.frequenceOfUse}</Text>
                     </View>
                 </View>
-                <View style={styles.divider} />
-
-                <View style={styles.headProduct}>
-                    <View style={styles.titleContainer}>
+                <View className="h-px bg-gray-400 my-4" /><View className="flex-row justify-between items-start my-2.5">
+                    <View className="flex flex-col justify-between">
                         {/*title of the product*/}
-                        <Text style={styles.title}>{product.title}</Text>
-                        <Text style={styles.productPrice}>Description:</Text>
+                        <Text className="text-2xl font-bold">{product.title}</Text>
+                        <Text className="text-gray-500">Description:</Text>
                     </View>
 
                     {/*price of the product*/}
-                    <View style={styles.priceContainer}>
-                        <Text style={styles.productPrice}>Price:</Text>
-                        <Text style={styles.sectionTitle}>{product.price} €</Text>
+                    <View className="items-end">
+                        <Text className="text-gray-500">Price:</Text>
+                        <Text className="text-xl font-bold my-2.5">{product.price} €</Text>
                     </View>
                 </View>
 
                 {/*description of the product*/}
-                <Text style={styles.sectionTitle}>" {product.description} "</Text>
-
-                <View style={styles.descriptionContainer}>
-                    <Text style={styles.descriptionTitle}>Details</Text>
+                <Text className="text-xl font-bold my-2.5">" {product.description} "</Text>                <View className="mt-5 p-4 bg-gray-100 rounded-lg mb-14">
+                    <Text className="text-lg font-bold mb-2.5">Details</Text>
                     {/* Always show first attribute (e.g., state) */}
-                    <View style={styles.attributeRow}>
-                        <Text style={styles.attributeLabel}>State</Text>
-                        <Text style={styles.attributeValue}>{product.state}</Text>
+                    <View className="flex-row justify-between my-1">
+                        <Text className="font-semibold text-gray-800">State</Text>
+                        <Text className="text-gray-600">{product.state}</Text>
                     </View>
 
                     {/* Expandable section */}
                     {showMore && (
                         <>
-                            <View style={styles.divider} />
+                            <View className="h-px bg-gray-400 my-2.5" />
 
-                            <View style={styles.attributeRow}>
-                                <Text style={styles.attributeLabel}>Brand</Text>
-                                <Text style={styles.attributeValue}>{product.brand}</Text>
+                            <View className="flex-row justify-between my-1">
+                                <Text className="font-semibold text-gray-800">Brand</Text>
+                                <Text className="text-gray-600">{product.brand}</Text>
                             </View>
 
-                            <View style={styles.divider} />
+                            <View className="h-px bg-gray-400 my-2.5" />
 
-                            <View style={styles.attributeRow}>
-                                <Text style={styles.attributeLabel}>Category</Text>
-                                <Text style={styles.attributeValue}>{product.category}</Text>
+                            <View className="flex-row justify-between my-1">
+                                <Text className="font-semibold text-gray-800">Category</Text>
+                                <Text className="text-gray-600">{product.category}</Text>
                             </View>
 
-                            <View style={styles.divider} />
+                            <View className="h-px bg-gray-400 my-2.5" />
 
-                            <View style={styles.attributeRow}>
-                                <Text style={styles.attributeLabel}>Size</Text>
-                                <Text style={styles.attributeValue}>{product.size}</Text>
+                            <View className="flex-row justify-between my-1">
+                                <Text className="font-semibold text-gray-800">Size</Text>
+                                <Text className="text-gray-600">{product.size}</Text>
                             </View>
 
-                            <View style={styles.divider} />
+                            <View className="h-px bg-gray-400 my-2.5" />
 
-                            <View style={styles.attributeRow}>
-                                <Text style={styles.attributeLabel}>Color</Text>
-                                <Text style={styles.attributeValue}>{product.color}</Text>
+                            <View className="flex-row justify-between my-1">
+                                <Text className="font-semibold text-gray-800">Color</Text>
+                                <Text className="text-gray-600">{product.color}</Text>
                             </View>
 
-                            <View style={styles.divider} />
+                            <View className="h-px bg-gray-400 my-2.5" />
 
-                            <View style={styles.attributeRow}>
-                                <Text style={styles.attributeLabel}>Stock</Text>
-                                <Text style={styles.attributeValue}>{product.stock}</Text>
+                            <View className="flex-row justify-between my-1">
+                                <Text className="font-semibold text-gray-800">Stock</Text>
+                                <Text className="text-gray-600">{product.stock}</Text>
                             </View>
 
-                            <View style={styles.divider} />
+                            <View className="h-px bg-gray-400 my-2.5" />
 
-                            <View style={styles.attributeRow}>
-                                <Text style={styles.attributeLabel}>Delivery</Text>
-                                <Text style={styles.attributeValue}>{product.deliveryPrice} €</Text>
+                            <View className="flex-row justify-between my-1">
+                                <Text className="font-semibold text-gray-800">Delivery</Text>
+                                <Text className="text-gray-600">{product.deliveryPrice} €</Text>
                             </View>
                         </>
 
@@ -184,34 +174,32 @@ const BrowsingPage = () => {
 
 
                     <TouchableOpacity onPress={() => setShowMore(!showMore)}>
-                        <Text style={styles.seeMore}>
+                        <Text className="text-[#6c63ff] mt-2.5 font-bold">
                             {showMore ? 'See less' : 'See more'}
                         </Text>
                     </TouchableOpacity>
                 </View>
 
 
-            </ScrollView>
-            {/* Showing image on click*/}
+            </ScrollView>            {/* Showing image on click*/}
             {showFullScreen && (
-                <BlurView intensity={70} tint="dark" style={styles.fullScreenOverlay}>
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setShowFullScreen(false)}>
-                        <Ionicons name="close" size={32} color="white" />
-                    </TouchableOpacity>
-                    <Image
+                <BlurView intensity={70} tint="dark" className="absolute inset-0 justify-center items-center z-[999] overflow-hidden">
+                    <TouchableOpacity className="absolute top-12 right-6 z-[1000] bg-black/20 rounded-full p-2" onPress={() => setShowFullScreen(false)}>
+                        <Ionicons name="close" size={28} color="white" />
+                    </TouchableOpacity>                    <Image
                         source={imageMap[mainImage]}
-                        style={styles.fullScreenImage}
+                        style={imageStyles.fullScreenImage}
                         resizeMode="contain"
                     />
                 </BlurView>
             )}
             {/*contact buttons*/}
-            <View style={styles.containContactButtons}>
-                <TouchableOpacity style={styles.contactButton} onPress={() => alert('Ajouté au panier !')}>
-                    <Text style={styles.contactButtonText}>Make an Offer</Text>
+            <View className="absolute bottom-0 pb-2.5 z-[100] flex flex-row justify-around w-full bg-white">
+                <TouchableOpacity className="bg-[#6c63ff] px-4 py-4 rounded-lg items-center mt-2 shadow-md w-[40%]" onPress={() => alert('Ajouté au panier !')}>
+                    <Text className="text-white font-bold text-base">Make an Offer</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.contactButton} onPress={() => alert('Négotiations débutés')}>
-                    <Text style={styles.contactButtonText}>Buy</Text>
+                <TouchableOpacity className="bg-[#6c63ff] px-4 py-4 rounded-lg items-center mt-2 shadow-md w-[40%]" onPress={() => alert('Négotiations débutés')}>
+                    <Text className="text-white font-bold text-base">Buy</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -219,149 +207,40 @@ const BrowsingPage = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: { padding: 20, backgroundColor: '#fff', flex: 1 },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-    title: { fontSize: 24, fontWeight: 'bold' },
-    sectionTitle: { fontSize: 20, fontWeight: 'bold', marginVertical: 10 },
-    sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    productImage: { width: "100%", height: 350, borderRadius: 8 },
-    productName: { fontWeight: 'bold', marginTop: 10 },
-    productPrice: { color: 'gray' },
-    containContactButtons: {
-        position: 'absolute',
-        bottom: 0,
-        paddingBottom: 10,
-        zIndex: 100,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+// StyleSheet for image components to fix rendering issues
+const imageStyles = StyleSheet.create({
+    mainProductImage: {
         width: '100%',
-        backgroundColor: '#fff',
+        height: 384, // h-96 equivalent
+        borderRadius: 12, // rounded-xl
     },
-    contactButton: { backgroundColor: '#6c63ff', padding: 15, borderRadius: 10, alignItems: 'center', marginTop: 7,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 3,
-        width: '40%',
+    thumbnailImage: {
+        width: 64, // w-16
+        height: 64, // h-16
+        borderRadius: 8, // rounded-lg
+        borderWidth: 1,
+        borderColor: '#e5e7eb', // gray-200
     },
-    contactButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16, },
-    viewPrice: {flexDirection: 'row', justifyContent: 'flex-end',},
-    headProduct: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginVertical: 10},
-    titleContainer: {display: "flex", flexDirection: "column",justifyContent: "space-between"}, priceContainer: {alignItems: 'flex-end',},
-    descriptionContainer: {
-        marginTop: 20,
-        padding: 15,
-        backgroundColor: '#f2f2f2',
-        borderRadius: 10,
-        marginBottom: 55,
-    },
-    descriptionTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    descriptionText: {
-        fontSize: 14,
-        marginBottom: 10,
-        color: '#333',
-    },
-    attribute: {
-        fontSize: 14,
-        marginVertical: 2,
-    },
-    seeMore: {
-        color: '#6c63ff',
-        marginTop: 10,
-        fontWeight: 'bold',
-    },
-    backButton: {
-        position: 'absolute',
-        top: 40,
-        left: 20,
-        zIndex: 100,
-        backgroundColor: 'white',
-        padding: 8,
-        borderRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 3,
-    },
-    attributeRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginVertical: 4,
-    },
-    attributeLabel: {
-        fontWeight: '600',
-        color: '#333',
-    },
-    attributeValue: {
-        color: '#666',
-    },
-    divider: {
-        height: 1,
-        backgroundColor: 'gray',
-        marginVertical: 10,
-    },
-    prodImages: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginTop: 11,
+    thumbnailImageSelected: {
+        width: 64,
+        height: 64,
         borderRadius: 8,
-    },
-    previewImage: {
-        width: 50,
-        height: 50,
-        marginRight: 20,
-    },
-
-
-    selectedPreviewImage: {
         borderWidth: 2,
-        borderColor: '#6c63ff',
+        borderColor: '#6c63ff', // brand color
     },
-
-    fullScreenOverlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 999,
-        overflow: 'hidden',
+    userProfileImage: {
+        width: 56, // w-14
+        height: 56, // h-14
+        borderRadius: 28, // rounded-full
+        borderWidth: 2,
+        borderColor: '#e5e7eb', // gray-200
+        marginRight: 16, // mr-4
     },
-
     fullScreenImage: {
-        width: '90%',
-        height: '70%',
-        borderRadius: 10,
+        width: '95%',
+        height: '80%',
+        borderRadius: 16, // rounded-2xl
     },
-
-    closeButton: {
-        position: 'absolute',
-        top: 40,
-        right: 20,
-        zIndex: 1000,
-    },
-    sellerBox:{
-        display: 'flex',
-        flexDirection: 'row',
-        margin: 0,
-        padding: 0,
-    },
-    userImage:{
-        marginRight: 20,
-        width: 50,
-        height: 50,
-        borderRadius: '100%',
-    }
 });
 
 export default BrowsingPage;

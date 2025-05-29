@@ -101,17 +101,11 @@ const FilterDropdown = ({
                                     />
                                     {title === "Price" &&
                                         option === "Less than" &&
-                                        selected.includes("Less than") && (                                            <TextInput
+                                        selected.includes("Less than") && (
+                                            <TextInput
                                                 placeholder="Enter less than"
                                                 keyboardType="number-pad"
-                                                style={{
-                                                    borderWidth: 1,
-                                                    borderColor: "#ccc",
-                                                    borderRadius: 8,
-                                                    padding: 10,
-                                                    marginTop: 8,
-                                                    backgroundColor: "#f9f9f9"
-                                                }}
+                                                style={styles.searchInput}
                                                 value={customPrice.toString()}
                                                 onChangeText={(text) => {
                                                     const clean = text.replace(/[^0-9]/g, "");
@@ -136,19 +130,28 @@ const FilterDropdown = ({
 };
 
 const BrowsingPage = () => {
+    const [searchText, setSearchText] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
     const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
     const [customPrice, setCustomPrice] = useState<number>(0);
     const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
-    const [selectedSizes, setSelectedSizes] = useState<string[]>([]);    const clearAllFilters = () => {
+    const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+
+    const clearAllFilters = () => {
         setSelectedCategory("");
         setSelectedBrands([]);
         setSelectedPrices([]);
         setSelectedMaterials([]);
         setSelectedSizes([]);
+        setSearchText("");
         setCustomPrice(0);
-    };    const filteredProducts = productList.filter((product) => {
+    };
+
+    const filteredProducts = productList.filter((product) => {
+        const matchSearch = product.name
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
         const matchBrand =
             selectedBrands.length === 0 ||
             selectedBrands.includes("All") ||
@@ -175,10 +178,12 @@ const BrowsingPage = () => {
         const matchSize =
             selectedSizes.length === 0 ||
             selectedSizes.includes("All") ||
-            product.sizes.some((size: string) => selectedSizes.includes(size));        const matchCategory =
+            product.sizes.some((size: string) => selectedSizes.includes(size));
+
+        const matchCategory =
             !selectedCategory || selectedCategory === product.category;
 
-        return matchBrand && matchPrice && matchMaterial && matchSize && matchCategory;
+        return matchBrand && matchSearch && matchPrice && matchMaterial && matchSize && matchCategory;
     });
 
     const renderSelectedTags = (label: string, values: string[]) => {
@@ -203,6 +208,15 @@ const BrowsingPage = () => {
                 <Text style={styles.welcomeSubtitle}>
                     Discover the latest fashion trends
                 </Text>
+            </View>
+
+            <View style={styles.searchContainer}>
+                <TextInput
+                    placeholder="Search for clothes..."
+                    style={styles.searchInput}
+                    value={searchText}
+                    onChangeText={setSearchText}
+                />
             </View>
 
             <Text style={styles.sectionTitle}>Categories</Text>
@@ -321,6 +335,17 @@ const BrowsingPage = () => {
 
 const styles = StyleSheet.create({
     container: { padding: 20, backgroundColor: "#fff", flex: 1 },
+    searchContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 20,
+    },
+    searchInput: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: "#f0f0f0",
+        borderRadius: 8,
+    },
     sectionTitle: { fontSize: 20, fontWeight: "bold", marginVertical: 10 },
     sectionHeader: {
         flexDirection: "row",
