@@ -18,11 +18,15 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.uberdrip.app"
-    },
-    "web": {
+    },    "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "build": {
+        "babel": {
+          "include": ["@expo/vector-icons"]
+        }
+      }
     },
     "plugins": [
       "expo-router",

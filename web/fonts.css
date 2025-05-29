@@ -1,29 +1,50 @@
-/* Web-specific icon font loading for UberDrip */
-
-/* Import Ionicons font for web */
-@import url('https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.css');
+/* Web-specific font loading for UberDrip */
 
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-/* Ensure Ionicons are properly loaded */
-ion-icon {
-  font-family: 'Ionicons' !important;
+/* Base font settings */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-display: swap;
 }
 
-/* Fallback for any missing icon fonts */
-.ionicon {
-  font-family: 'Ionicons', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  font-display: swap;
-}
-
-/* Web-specific font optimization */
+/* @expo/vector-icons font loading for web */
 @font-face {
   font-family: 'Ionicons';
-  src: url('https://unpkg.com/ionicons@7.1.0/dist/ionicons/fonts/ionicons.woff2') format('woff2'),
-       url('https://unpkg.com/ionicons@7.1.0/dist/ionicons/fonts/ionicons.woff') format('woff');
+  src: url('https://unpkg.com/@expo/vector-icons@14.0.2/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf') format('truetype');
   font-display: swap;
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'MaterialIcons';
+  src: url('https://unpkg.com/@expo/vector-icons@14.0.2/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf') format('truetype');
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Ensure proper icon font rendering */
+.Ionicons {
+  font-family: 'Ionicons' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.MaterialIcons {
+  font-family: 'MaterialIcons' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
