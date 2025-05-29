@@ -1,6 +1,6 @@
 # Cloudflare Pages Deployment Guide for UberDrip
 
-## Quick Setup in Cloudflare Pages Dashboard:
+## 🔧 Fixed Configuration for Cloudflare Pages Dashboard:
 
 ### 1. Project Configuration:
 - **Name**: `uberdrip`
@@ -15,12 +15,17 @@ npm install && npx expo export -p web
 
 # Output directory:
 dist
+
+# Deploy command:
+npx wrangler pages deploy dist
 ```
 
-### 3. Environment Variables (Add in Cloudflare Pages settings):
+### 3. Environment Variables (REQUIRED - Add in Cloudflare Pages settings):
+**Go to: Project → Settings → Environment variables → Production**
+
 ```
-EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
-EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+EXPO_PUBLIC_SUPABASE_URL=https://jsqutcbjouulaypspvqt.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzcXV0Y2Jqb3V1bGF5cHNwdnF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDczNzM3NjQsImV4cCI6MjA2Mjk0OTc2NH0.tw94pFCbE1rmEj3gRhG_NoPlrZnzNgrCCY6UzXILYmI
 EXPO_PUBLIC_APP_URL=https://uberdrip.pages.dev
 EXPO_PUBLIC_ENVIRONMENT=production
 ```
@@ -29,6 +34,27 @@ EXPO_PUBLIC_ENVIRONMENT=production
 - **Node.js version**: 18.x (compatible with Expo)
 - **Build timeout**: 15 minutes
 - **Root directory**: (leave empty)
+
+## ✅ What Was Fixed:
+
+1. **Removed invalid `[build]` section** from wrangler.toml
+2. **Updated Supabase config** to use environment variables
+3. **Simplified deploy command** - removed `--project-name` parameter
+4. **Added environment variables** for proper production configuration
+
+## 🚀 Deployment Steps:
+
+### Step 1: Add Environment Variables
+1. Go to Cloudflare Pages Dashboard
+2. Select your `uberdrip` project
+3. Go to **Settings** → **Environment variables**
+4. Add all the variables listed above
+
+### Step 2: Redeploy
+After adding the environment variables, trigger a new deployment:
+- Go to **Deployments** tab
+- Click **Retry deployment** on the latest failed build
+- Or push a new commit to trigger automatic rebuild
 
 ## Important Notes:
 
