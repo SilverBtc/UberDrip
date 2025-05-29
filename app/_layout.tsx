@@ -16,6 +16,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import CustomHeader from "./components/CustomHeader";
 import { AuthProvider } from "../contexts/AuthContext";
 import { AuthGuard } from "../components/AuthGuard";
+import { registerServiceWorker } from "../hooks/usePWA";
 
 import Home from "./screens";
 import Explore from "./screens/explore";
@@ -25,6 +26,9 @@ import Profile from "./screens/profile";
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
+
+// Register PWA service worker
+registerServiceWorker();
 
 const Tab = createBottomTabNavigator();
 

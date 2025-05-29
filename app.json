@@ -22,11 +22,21 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.yourcompany.uberdrip"
-    },
-    "web": {
+    },    "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "template": "./web/index.html",
+      "name": "UberDrip",
+      "shortName": "UberDrip",
+      "lang": "en",
+      "scope": "/",
+      "themeColor": "#000000",
+      "backgroundColor": "#ffffff",
+      "display": "standalone",
+      "orientation": "portrait",
+      "startUrl": "/",
+      "crossorigin": "anonymous"
     },
     "plugins": ["expo-router"],
     "experiments": {

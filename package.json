@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "build:web": "npx expo export -p web && node -e \"const fs = require('fs'); try { fs.copyFileSync('public/_redirects', 'dist/_redirects'); console.log('_redirects copied'); } catch(e) { console.log('No _redirects to copy'); }\"",
+    "build:web": "npx expo export -p web --output-dir build && node -e \"const fs = require('fs'); try { fs.copyFileSync('public/_redirects', 'build/_redirects'); console.log('_redirects copied'); } catch(e) { console.log('No _redirects to copy'); }\" && node -e \"const fs = require('fs'); try { fs.copyFileSync('public/manifest.json', 'build/manifest.json'); console.log('manifest.json copied'); } catch(e) { console.log('No manifest.json to copy'); }\" && node -e \"const fs = require('fs'); try { fs.copyFileSync('public/sw.js', 'build/sw.js'); console.log('sw.js copied'); } catch(e) { console.log('No sw.js to copy'); }\"",
     "preview": "npm run build:web && npx serve dist"
   },
   "jest": {
