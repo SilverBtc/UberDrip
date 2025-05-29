@@ -1,0 +1,29 @@
+/* Web-specific icon font loading for UberDrip */
+
+/* Import Ionicons font for web */
+@import url('https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.css');
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Ensure Ionicons are properly loaded */
+ion-icon {
+  font-family: 'Ionicons' !important;
+  font-display: swap;
+}
+
+/* Fallback for any missing icon fonts */
+.ionicon {
+  font-family: 'Ionicons', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-display: swap;
+}
+
+/* Web-specific font optimization */
+@font-face {
+  font-family: 'Ionicons';
+  src: url('https://unpkg.com/ionicons@7.1.0/dist/ionicons/fonts/ionicons.woff2') format('woff2'),
+       url('https://unpkg.com/ionicons@7.1.0/dist/ionicons/fonts/ionicons.woff') format('woff');
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
